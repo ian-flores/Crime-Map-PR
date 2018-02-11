@@ -23,12 +23,15 @@ data <- data[data$POINT_Y != 0,]
 ```
 
 ## Distribución Espacial en la Isla
+
+La escala de colores es segun el numero de casos en una región dada. Verde es para las regiones con menos casos reportados entre 2012 y 2016. Amarillo es para las regiones con un número intermedio de casos reportados. Anaranjado es para un número elevado de casos reportados. 
+
 ```{r, echo=FALSE}
 library(leaflet)
 m <- leaflet() %>% 
 	addProviderTiles(providers$Esri.NatGeoWorldMap) %>%
 	addMarkers(lng = data$POINT_Y, lat = data$POINT_X, 
-			   clusterOptions = markerClusterOptions()) 
+			   clusterOptions = markerClusterOptions())
 
 m
 ```
@@ -65,6 +68,9 @@ ggplot(data = data) +
 ```
 
 ## Distribución por Mes
+
+Esta distribución por mes, es cumulativa por año. Entiendase, es la suma de todos los casos reportados en un mes dado desde el 2012 al 2016. 
+
 ```{r, echo=FALSE,results='hide',fig.keep='all'}
 ggplot(data = data) +
 	geom_histogram(mapping = aes(x = Month), stat = "count")+
@@ -76,7 +82,8 @@ ggplot(data = data) +
 ## Distribución por Día
 
 Escogí visualizar la distribución por dia para observar, preliminarmente, si a medida que los días 
-se alejan del dia de pago (quincena), aumentaba o disminuía la incidencia. 
+se alejan del dia de pago (quincena), aumentaba o disminuía la incidencia. Esta distribución por dia, es cumulativa por año. Entiendase, es la suma de todos los casos reportados en un dia dado desde el 2012 al 2016. 
+
 ```{r, echo=FALSE,results='hide',fig.keep='all'}
 ggplot(data = data) +
 	geom_histogram(mapping = aes(x = Day), stat = "count")+
@@ -86,6 +93,9 @@ ggplot(data = data) +
 ```
 
 ## Distribución por Hora
+
+Esta distribución por hora, es cumulativa por año. Entiendase, es la suma de todos los casos reportados por hora desde el 2012 al 2016. El formato es en formato militar. 
+
 ```{r, echo=FALSE,results='hide',fig.keep='all'}
 ggplot(data = data) +
 	geom_histogram(mapping = aes(x = Hour), stat = "count") +
@@ -95,6 +105,9 @@ ggplot(data = data) +
 ```
 
 ## Distribución por Día de la Semana
+
+Esta distribución por dia de la semana, es cumulativa por año. Entiendase, es la suma de todos los casos reportados en un dia de la semana, dado desde el 2012 al 2016. 
+
 ```{r, echo=FALSE,results='hide',fig.keep='all'}
 ggplot(data = data) +
 	geom_histogram(mapping = aes(x = Semana), stat = "count") +
