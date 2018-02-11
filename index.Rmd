@@ -10,7 +10,7 @@ output:
 
 ## Justificación
 
-En Puerto Rico, ocurren múltiples agresiones sexuales a diario. En este mini-reporte no trato de ser exhaustivo con un análisis meramente cuantitativo sobre las agresiones sexuales en la isla, si no fomentar una discusión sobre el tema y que sirva de guia para futuros trabajos. Cabe recalcar que los números reportados a la Policía de Puerto Rico están subestimados. Los datos fueron obtenidos del portal [data.pr.gov](data.pr.gov). 
+En Puerto Rico, ocurren múltiples agresiones sexuales a diario. En este mini-reporte no trato de ser exhaustivo con un análisis meramente cuantitativo sobre las agresiones sexuales en la isla, si no fomentar una discusión sobre el tema y que sirva de guia para futuros trabajos. Cabe recalcar que los números reportados a la Policía de Puerto Rico están subestimados. Los datos fueron obtenidos del portal [data.pr.gov](data.pr.gov). El codigo para reproducir estas visualizaciones se encuentra publicado en [GitHub](https://github.com/ian-flores/Crime-Map-PR/blob/master/index.Rmd). 
 
 ```{r, echo=FALSE,results='hide',fig.keep='all'}
 oldw <- getOption("warn")
@@ -45,7 +45,12 @@ data['Hour'] = hours(data$Hora)
 data['Semana'] = weekdays(data$Fecha)
 
 library(plyr)
-mapvalues(data$Semana, from = levels(data$Semana), to = c("Domingo","Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"))
+data['Semana'] = mapvalues(data$Semana, from = levels(data$Semana), 
+						   to = c("Domingo","Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"))
+data['Month'] = mapvalues(data$Month, from = levels(data$Month), 
+						  to = c("Enero", "Febrero", "Marzo", "Abril", "Mayo", 
+						  	   "Junio", "Julio", "Agosto", "Septiembre", "Octubre", 
+						  	   "Noviembre", "Diciembre"))
 ```
 
 ## Distribución por Año
