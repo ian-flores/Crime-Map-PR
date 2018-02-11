@@ -1,0 +1,94 @@
+---
+title: "Casos de Agresiones Sexuales en PR desde el 2012 al 2016"
+author: "Ian Flores"
+date: "10 de Febrero del 2018"
+output:
+  html_document: default
+  toc: true
+  toc_float: true
+---
+
+## Justificacion
+
+En Puerto Rico, como sociedad patriarcal en la cual vivimos, ocurren multiples agresiones sexuales a diario. En este mini-reporte no trato de ser exhaustivo con un analisis meramente cuantitativo sobre las agresiones sexuales en la isla, si no fomentar una discusion sobre el tema y que sirva de guia para futuros trabajos. Los datos fueron obtenidos del portal [data.pr.gov](data.pr.gov). 
+
+```{r, echo=FALSE,results='hide',fig.keep='all'}
+oldw <- getOption("warn")
+options(warn = -1)
+data <- read.csv("../Mapa_del_Crimen___Crime_Map.csv")
+data <- data[data$Delitos_code == 'Violacion',]
+data <- na.omit(data)
+data <- data[data$POINT_X != 0,]
+data <- data[data$POINT_Y != 0,]
+```
+
+## Distribucion Espacial en la Isla
+```{r, echo=FALSE}
+library(leaflet)
+m <- leaflet() %>% 
+	addProviderTiles(providers$Esri.NatGeoWorldMap) %>%
+	addMarkers(lng = data$POINT_Y, lat = data$POINT_X, 
+			   clusterOptions = markerClusterOptions()) 
+
+m
+```
+
+```{r, echo=FALSE,results='hide',fig.keep='all'}
+library(chron)
+
+data$Hora <- times(as.character(data$Hora))
+data$Fecha <- dates(as.character(data$Fecha), format = "y/m/d")
+data['Year'] = years(data$Fecha)
+data['Month'] = months(data$Fecha)
+data['Day'] = days(data$Fecha)
+data['Hour'] = hours(data$Hora)
+data['Semana'] = weekdays(data$Fecha)
+```
+
+## Distribucion por A~o
+```{r, echo=FALSE,results='hide',fig.keep='all'}
+library(ggplot2)
+
+ggplot(data = data) +
+	geom_histogram(mapping = aes(x = Year), stat = "count") +
+	labs(y = "Numero de Casos Reportados", 
+		 title = "Numero de Casos Reportados por A~o")
+```
+
+## Distribucion por Mes
+```{r, echo=FALSE,results='hide',fig.keep='all'}
+ggplot(data = data) +
+	geom_histogram(mapping = aes(x = Month), stat = "count")+
+	labs(x = "Mes", 
+		 y = "Numero de Casos Reportados", 
+		 main = "Numero de Casos Reportados por Mes")
+```
+
+## Distribucion por Dia
+```{r, echo=FALSE,results='hide',fig.keep='all'}
+ggplot(data = data) +
+	geom_histogram(mapping = aes(x = Day), stat = "count")+
+	labs(x = "Dia", 
+		 y = "Numero de Casos Reportados", 
+		 title = "Numero de Casos Reportados por Dia")
+```
+
+## Distribucion por Hora
+```{r, echo=FALSE,results='hide',fig.keep='all'}
+ggplot(data = data) +
+	geom_histogram(mapping = aes(x = Hour), stat = "count") +
+	labs(x = "Hora", 
+		 y = "Numero de Casos Reportados", 
+		 title = "Numero de Casos Reportados por Hora")
+```
+
+## Distribucion por Dia de la Semana
+```{r, echo=FALSE,results='hide',fig.keep='all'}
+ggplot(data = data) +
+	geom_histogram(mapping = aes(x = Semana), stat = "count") +
+	labs(x = "Dia de Semana",
+		 y = "Numero de Casos Reportados", 
+		 title = "Numero de Casos Reportados por Dia de Semana")
+options(warn = oldw)
+```
+
