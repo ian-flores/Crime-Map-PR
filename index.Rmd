@@ -75,7 +75,8 @@ ggplot(data = data) +
 
 ## Distribución por Día
 
-Escogí visualizar la distribución por dia para observar, preliminarmente, si a medida que los días \n se alejan del dia de pago (quincena), aumentaba o disminuía la incidencia. 
+Escogí visualizar la distribución por dia para observar, preliminarmente, si a medida que los días 
+se alejan del dia de pago (quincena), aumentaba o disminuía la incidencia. 
 ```{r, echo=FALSE,results='hide',fig.keep='all'}
 ggplot(data = data) +
 	geom_histogram(mapping = aes(x = Day), stat = "count")+
